@@ -1,0 +1,21 @@
+---
+config:
+# gearmanを利用する場合、enableを1にして、germandのhost名とportを指定します
+  gearman_enable: <%= @cf_yaml[:config][:gearman_enable] %>
+  gearman_server:
+    host: <%= @cf_yaml[:config][:gearman_server_host] %>
+    port: <%= @cf_yaml[:config][:gearman_enable] %>
+# rrdのファイルを設置する場所。「/」から始まると絶対パスとなります
+  data_dir: <%= @cf_yaml[:config][:data_dir] %>
+# 監視項目の設定ファイルを設置するディレクトリ。「/」から始まると絶対パス
+  host_config_dir: <%= @cf_yaml[:config][:host_config_dir] %>
+
+component_config:
+# SNMPでデータを取得する時のオプション。communityとversion
+  SNMP:
+    community: <%= @cf_yaml[:component_config][:snmp_community] %>
+    version: <%= @cf_yaml[:component_config][:snmp_version] %>
+# MySQLを監視する場合のuser名とパスワード
+  MySQL:
+    user: <%= @cf_yaml[:component_config][:mysql_user] %>
+    password: <%= @cf_yaml[:component_config][:mysql_password] %>

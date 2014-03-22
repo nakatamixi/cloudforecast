@@ -1,0 +1,56 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          cf_radar
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: cloudforecast radar service script
+# Description:       This file should be used to construct scripts to be
+#                    placed in /etc/init.d.
+### END INIT INFO
+
+cf_dir="<%= node[:cloudforecast][:install_dir] %>/"
+cf_radar="${cf_dir}cloudforecast_radar"
+prog=$(basename $cf_radar)
+cf_yaml="${cf_dir}cloudforecast.yaml"
+sl_yaml="${cf_dir}server_list.yaml"
+log_file="<%= node[:cloudforecast][:log_path] %>/${prog}.log"
+lock_file="<%= node[:cloudforecast][:lock_path] %>/${prog}"
+
+start(){
+	if [ -f "$lock_file" ] ; then
+	  echo "lock file exists. ${lock_file}"
+	  echo "start ${prog} abort.."
+	  exit
+	fi
+    echo -n "Starting ${prog}: .."
+    CF_DEBUG=<%= node[:cloudforecast][:debug] %> $cf_radar -r -c $cf_yaml -l $sl_yaml >> $log_file 2>&1 &
+    retval=$?
+    echo
+    sleep 1
+    [ $retval -eq 0 ] && touch $lock_file
+}
+stop(){
+    echo -n "Shutdown ${prog}: .."
+    pkill -f ${prog}
+    retval=$?
+    echo
+    [ $retval -eq 0 ] && rm -f $lock_file
+}
+
+case "$1" in
+  start)
+    start
+    sleep 1
+    ;;
+
+  stop)
+    stop
+    sleep 1
+    ;;
+
+  *)
+    echo "Usage: `basename $0` {start|stop}" >&2
+    exit 1
+esac
+
+exit 0
