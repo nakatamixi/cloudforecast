@@ -39,22 +39,24 @@ git "#{node[:cloudforecast][:install_dir]}/" do
   repository node[:cloudforecast][:git_repository]
   reference node[:cloudforecast][:git_revision]
   action :checkout
+  user "#{node[:cloudforecast][:user]}"
+  group "#{node[:cloudforecast][:group]}"
 end
 
 bash "install CPAN" do
   cwd "#{node[:cloudforecast][:install_dir]}/"
-  code <<-EOH
-    wget --no-check-certificate http://cpanmin.us/ -O cpanm
-    perl cpanm -v -L extlib Module::Install CPAN CGI
-    perl cpanm -v -L extlib --installdeps .
-  EOH
   user "#{node[:cloudforecast][:user]}"
+  environment 'HOME' => '/home/cloudforecast'
+  code <<-EOH
+    cpanm -v -L extlib local::lib Module::Install CPAN CGI
+    cpanm -v -L extlib --installdeps .
+  EOH
 end
 
 directory "#{node[:cloudforecast][:cf_yaml][:config][:data_dir]}" do
   owner "#{node[:cloudforecast][:user]}"
   group "#{node[:cloudforecast][:group]}"
-  mode 0644
+  mode 0775
   action :create
 end
 
