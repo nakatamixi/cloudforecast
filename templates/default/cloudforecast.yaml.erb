@@ -4,7 +4,7 @@ config:
   gearman_enable: <%= @cf_yaml[:config][:gearman_enable] %>
   gearman_server:
     host: <%= @cf_yaml[:config][:gearman_server_host] %>
-    port: <%= @cf_yaml[:config][:gearman_enable] %>
+    port: <%= @cf_yaml[:config][:gearman_server_port] %>
 # rrdのファイルを設置する場所。「/」から始まると絶対パスとなります
   data_dir: <%= @cf_yaml[:config][:data_dir] %>
 # 監視項目の設定ファイルを設置するディレクトリ。「/」から始まると絶対パス
