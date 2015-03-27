@@ -49,7 +49,7 @@ bash "install CPAN" do
   environment 'HOME' => '/home/cloudforecast'
   code <<-EOH
     cpanm -v -L extlib local::lib Module::Install CPAN CGI
-    cpanm -v -L extlib --installdeps .
+    cpanm -v -L extlib --installdeps --notest .
   EOH
 end
 
