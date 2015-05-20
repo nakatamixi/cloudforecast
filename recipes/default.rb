@@ -27,7 +27,7 @@ case node[:platform]
     end
   when 'debian','ubuntu'
     %w{
-      git libsnmp-perl librrds-perl snmp snmpd rrdtool
+      git libsnmp-perl librrds-perl snmp snmpd rrdtool libexpat1-dev
     }.each do |pkg|
       package pkg do
         action :install
