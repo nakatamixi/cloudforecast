@@ -48,7 +48,7 @@ bash "install CPAN" do
   user "#{node[:cloudforecast][:user]}"
   environment 'HOME' => '/home/cloudforecast'
   code <<-EOH
-    cpanm -v -L extlib local::lib Module::Install CPAN CGI DBD::mysql JMX::Jmx4Perl
+    cpanm -v -L extlib --notest local::lib Module::Install CPAN CGI DBD::mysql JMX::Jmx4Perl
     cpanm -v -L extlib --installdeps --notest .
   EOH
 end
